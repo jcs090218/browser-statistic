@@ -9,6 +9,8 @@
 <img src="etc/demo.png" width="40%" />
 </p>
 
+This is a small extension that presents statistical charts indicating the websites you frequently visit.
+
 ## ⚜️ License
 
 browser-statistic is distributed under the terms of the MIT license.
