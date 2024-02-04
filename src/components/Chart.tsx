@@ -3,32 +3,52 @@ import { useState } from 'react';
 import { EChart } from '@hcorta/react-echarts';
 import PulseLoader from "react-spinners/PulseLoader";
 import { onDarkMode, onLightMode } from '../common/DarkMode';
+import extractDomain from 'extract-domain';
 
-let sites: any = undefined;  // Domains
-let data: any = undefined;   // count
+const data: Map<string, number> = new Map();
 
-// function grabData() {
-//     console.log(chrome.history);
-//     chrome.history.search({
-//         text: '',
-//     },
-//         function (item) {
-//             console.log(item);
-//             for (let i = 0; i < item.length; ++i) {
-//                 //let url = item[i].url;
-//             }
-//         });
-// }
+function grabData(setLoading: any) {
+    chrome.history.search({
+        text: '',
+        maxResults: 10000,
+    },
+        function (item) {
+            for (let i = 0; i < item.length; ++i) {
+                const url = item[i].url;
+                if (url === undefined)
+                    continue;
 
-// grabData();
+                const domain = extractDomain(url);
+                if (domain !== typeof (String))
+                    continue;
 
-const override = {
-    display: "block",
-    margin: "0 auto",
-    color: "#fff",
-};
+                if (!data.has(domain))
+                    data.set(domain, -1);
 
-function RenderLoader(color: string) {
+                let count: number | undefined = data.get(domain);
+                if (count === undefined)
+                    continue;
+
+                ++count;
+                data.set(domain, count);
+            }
+
+            setLoading(false);
+        });
+}
+
+function RenderLoader() {
+    const [color, setColor] = useState("#eee");
+
+    const override = {
+        display: "block",
+        margin: "0 auto",
+        color: "#fff",
+    };
+
+    onDarkMode(() => { setColor('#eee'); });
+    onLightMode(() => { setColor('#555'); });
+
     return (
         <>
             <PulseLoader
@@ -43,17 +63,13 @@ function RenderLoader(color: string) {
 }
 
 function Chart() {
-    let [loading, setLoading] = useState(true);
-    let [color, setColor] = useState("#eee");
-
-    /* Register hooks  */
-    onDarkMode(() => { setColor('#eee'); });
-    onLightMode(() => { setColor('#555'); });
+    const [loading, setLoading] = useState(true);
 
     if (loading === true) {
-        return RenderLoader(color);
+        grabData(setLoading);
+        return RenderLoader();
     }
-    
+
     return (
         <>
             <EChart
@@ -70,13 +86,13 @@ function Chart() {
                 }}
                 yAxis={{
                     type: 'category',
-                    data: ['Brazil', 'Indonesia', 'USA', 'India', 'China', 'World']
+                    data: [...data.keys()]
                 }}
                 series={[
                     {
                         name: '2011',
                         type: 'bar',
-                        data: [18203, 23489, 29034, 104970, 131744, 630230]
+                        data: [...data.values()]
                     },
                 ]}
             />
