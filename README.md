@@ -5,7 +5,9 @@
 
 [![CI](https://github.com/jcs090218/browser-statistic/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/browser-statistic/actions/workflows/test.yml)
 
-WIP
+<p align="center">
+<img src="etc/demo.png" width="40%" />
+</p>
 
 ## ⚜️ License
 
