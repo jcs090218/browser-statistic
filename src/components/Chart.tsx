@@ -28,6 +28,20 @@ const override = {
     color: "#fff",
 };
 
+function RenderLoader(color) {
+    return (
+        <>
+            <PulseLoader
+                loading={true}
+                color={color}
+                cssOverride={override}
+                size={10}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+            />
+        </>);
+}
+
 function Chart() {
     let [loading, setLoading] = useState(true);
     let [color, setColor] = useState("#eee");
@@ -36,17 +50,7 @@ function Chart() {
     onLightMode(() => { setColor('#555'); });
 
     if (loading === true) {
-        return (
-            <>
-                <PulseLoader
-                    loading={true}
-                    color={color}
-                    cssOverride={override}
-                    size={10}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                />
-            </>);
+        return RenderLoader(color);
     }
     return (
         <>
