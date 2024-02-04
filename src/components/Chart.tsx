@@ -28,7 +28,7 @@ const override = {
     color: "#fff",
 };
 
-function RenderLoader(color) {
+function RenderLoader(color: string) {
     return (
         <>
             <PulseLoader
@@ -46,12 +46,14 @@ function Chart() {
     let [loading, setLoading] = useState(true);
     let [color, setColor] = useState("#eee");
 
+    /* Register hooks  */
     onDarkMode(() => { setColor('#eee'); });
     onLightMode(() => { setColor('#555'); });
 
     if (loading === true) {
         return RenderLoader(color);
     }
+    
     return (
         <>
             <EChart
