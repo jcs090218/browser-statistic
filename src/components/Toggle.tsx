@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import ReactSwitch from 'react-switch';
+import { DEFAULT_DARK, setDart, setLight } from '../common/DarkMode';
 
 function Toggle() {
-    const [checked, setChecked] = useState(true);
+    const [checked, setChecked] = useState(DEFAULT_DARK);
 
     // @ts-expect-error allow any
     const handleChange = val => {
-        console.log(val);
         if (val)
-            document.body.classList.add('dark');
+            setDart();
         else
-            document.body.classList.remove('dark');
+            setLight();
         setChecked(val);
     }
 
