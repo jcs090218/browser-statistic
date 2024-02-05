@@ -11,6 +11,7 @@ interface HistoryData {
  }
 
 const data: Map<string, HistoryData> = new Map();
+let maxData: number = 0;
 
 function grabData(chart: Chart) {
     chrome.history.search({
@@ -42,6 +43,12 @@ function grabData(chart: Chart) {
             ++cache.count;
             cache.visited += current.visitCount ?? 0;
             data.set(hostname, cache);
+
+            /* Just record for the max bar length  */
+            {
+                maxData = Math.max(maxData, cache.count);
+                maxData = Math.max(maxData, cache.visited);    
+            }
         }
 
         chart.setState({ loading: false });
@@ -82,16 +89,28 @@ export default class Chart extends React.Component {
     };
 
     render(): React.ReactNode {
+        if (data.size === 0) {
+            return (<h3>No data to display</h3>);
+        }
+
         if (this.state.loading === true) {
             return this.renderLoader();
         }
 
+        /* Auto scale width */
+        const minWidth = 600;
+        const labelWidth = 200;
+        const width = Math.floor(maxData / 10) + labelWidth;
+        document.body.style.setProperty('min-height', Math.max(minWidth, width).toString() + 'px');
+
+        /* Auto scale height */
         const barSize = 31;
         const height = data.size * barSize;
-        const heightPx = height.toString() + 'px';
+        const minHeight = 800;
+        const heightPx = Math.max(height, minHeight).toString() + 'px';
 
+        /* Sort data nicely */
         const dataSorted = new Map([...data.entries()].sort((a, b) => a[1].visited - b[1].visited));
-
         const dataCount = [...dataSorted.values()].map(a => a.count);
         const dataVisited = [...dataSorted.values()].map(a => a.visited);
 
