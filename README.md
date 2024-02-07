@@ -4,7 +4,7 @@
 # browser-statistic
 > Show what site your often browse
 
-[![CI](https://github.com/jcs090218/browser-statistic/actions/workflows/test.yml/badge.svg)](https://github.com/jcs090218/browser-statistic/actions/workflows/test.yml)
+[![CI](https://github.com/jcs-chromews/browser-statistic/actions/workflows/test.yml/badge.svg)](https://github.com/jcs-chromews/browser-statistic/actions/workflows/test.yml)
 
 <p align="center">
 <img src="etc/demo.png" width="40%" />
