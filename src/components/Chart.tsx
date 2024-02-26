@@ -47,7 +47,7 @@ function grabData(chart: Chart) {
             /* Just record for the max bar length  */
             {
                 maxData = Math.max(maxData, cache.count);
-                maxData = Math.max(maxData, cache.visited);    
+                maxData = Math.max(maxData, cache.visited);
             }
         }
 
@@ -98,10 +98,10 @@ export default class Chart extends React.Component {
         }
 
         /* Auto scale width */
-        const minWidth = 600;
-        const labelWidth = 200;
-        const width = Math.floor(maxData / 10) + labelWidth;
-        document.body.style.setProperty('min-height', Math.max(minWidth, width).toString() + 'px');
+        //const minWidth = 600;
+        //const labelWidth = 200;
+        //const width = Math.floor(maxData / 10) + labelWidth;
+        //document.body.style.setProperty('min-width', Math.max(minWidth, width).toString() + 'px');
 
         /* Auto scale height */
         const barSize = 31;
